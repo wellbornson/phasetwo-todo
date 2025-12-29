@@ -1,0 +1,130 @@
+Frontend: Running npm run dev in the frontend directory (http://localhost:3000).
+Backend: Running uvicorn src.main:app --reload in the backend directory (http://localhost:8000).
+
+
+
+wellbornson.home@gmail.com
+npx neonctl@latest init
+
+connecting string psql 'postgresql://neondb_owner:npg_i7mtqBkU0hLp@ep-spring-pine-adl3htij-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+
+
+
+/SP.CONSTITUTION
+
+Project Name: hackathon-todo
+Version: 1.0
+Phase: Phase II - Todo Full-Stack Web Application (Basic Level Functionality)
+
+Objective: Transform the Phase I console app into a modern multi-user web application with persistent storage using Next.js, FastAPI, SQLModel, Neon DB, and Better Auth. Implement all 5 Basic Level features (Task CRUD: create, read, update, delete, toggle complete) as a web app with RESTful API endpoints, responsive frontend, Neon PostgreSQL storage, and user signup/signin via Better Auth with JWT for securing API.
+
+Development Approach: Use Agentic Dev Stack workflow with Spec-Kit Plus: Write spec → Generate plan → Break into tasks → Implement via Gemini Code. No manual coding. Review process, prompts, and iterations.
+
+Requirements:
+- Implement all 5 Basic Level features.
+- Create RESTful API endpoints exactly as: GET /api/{user_id}/tasks (list), POST /api/{user_id}/tasks (create), GET /api/{user_id}/tasks/{id} (get), PUT /api/{user_id}/tasks/{id} (update), DELETE /api/{user_id}/tasks/{id} (delete), PATCH /api/{user_id}/tasks/{id}/complete (toggle).
+- Build responsive frontend interface.
+- Store data in Neon Serverless PostgreSQL.
+- Authentication: User signup/signin using Better Auth with JWT tokens for API security (enable JWT plugin, attach to headers, verify in FastAPI middleware, filter by user_id, shared BETTER_AUTH_SECRET).
+- API Behavior: All endpoints require JWT, 401 without token, user isolation, stateless auth, token expiry (7 days).
+
+Technology Stack:
+- Frontend: Next.js 16+ (App Router), TypeScript, Tailwind CSS.
+- Backend: Python FastAPI.
+- ORM: SQLModel.
+- Database: Neon Serverless PostgreSQL (use connection string: 'postgresql://neondb_owner:npg_i7mtqBkU0hLp@ep-spring-pine-adl3htij-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'; init with npx neonctl@latest init if needed using email wellbornson.home@gmail.com).
+- Spec-Driven: Gemini Code + Spec-Kit Plus.
+- Authentication: Better Auth.
+
+Monorepo Structure:
+hackathon-todo/
+├── .spec-kit/                    # Spec-Kit configuration
+│   └── config.yaml               # Contents: name: hackathon-todo, version: "1.0", structure: {specs_dir: specs, features_dir: specs/features, api_dir: specs/api, database_dir: specs/database, ui_dir: specs/ui}, phases: [{name: phase2-web, features: [task-crud, authentication]}]
+├── specs/                        # Spec-Kit managed specifications
+│   ├── overview.md               # Project overview (Purpose: Todo app evolving to AI chatbot; Current Phase: II; Tech Stack as above; Features: Task CRUD, Auth)
+│   ├── architecture.md           # System architecture (Frontend-Backend-DB separation)
+│   ├── features/                 # Feature specifications
+│   │   ├── task-crud.md          # User stories and acceptance criteria as in project
+│   │   └── authentication.md     # Better Auth with JWT details
+│   ├── api/                      # API specifications
+│   │   ├── rest-endpoints.md     # Endpoints, auth, base URL, query params as in project
+│   ├── database/                 # Database specifications
+│   │   └── schema.md             # Tables: users (Better Auth), tasks (id, user_id, title, description, completed, created_at, updated_at); Indexes as in project
+│   └── ui/                       # UI specifications
+│       ├── components.md         # Reusable UI (e.g., TaskList, TaskForm)
+│       └── pages.md              # Pages: login, signup, tasks
+├── GEMINI.md                     # Root Gemini Code instructions (adapt from project: Project Overview, Spec-Kit Structure, How to Use Specs, Project Structure, Development Workflow, Commands)
+├── frontend/
+│   ├── GEMINI.md                 # Frontend guidelines (Stack: Next.js 16+, TS, Tailwind; Patterns: Server components default; API Client: /lib/api.ts; Styling: Tailwind)
+│   └── ... (Next.js app: initialize with npx create-next-app@latest --ts --tailwind --app)
+├── backend/
+│   ├── GEMINI.md                 # Backend guidelines (Stack: FastAPI, SQLModel, Neon; Structure: main.py, models.py, routes/, db.py; API Conventions; Database: Use env DATABASE_URL)
+│   └── ... (FastAPI app: initialize with pip install fastapi sqlmodel uvicorn)
+├── docker-compose.yml            # Services for frontend, backend, db
+└── README.md                     # Project setup instructions
+
+Instructions for Gemini: Create the entire monorepo structure above. Install all packages automatically (npm for frontend, pip for backend: fastapi, sqlmodel, uvicorn, pydantic, pyjwt). Create .env files in root, frontend, and backend with: BETTER_AUTH_SECRET (generate secure random), DATABASE_URL (use provided Neon string), and any API keys needed (API keys have been removed for security). Agent retrieves from Neon DB. Use monorepo for single context. Reference specs with @specs/features/task-crud.md etc.
+
+
+
+
+ /SP.SCPECIFY
+
+Based on the constitution, write and organize all specifications in /specs folder exactly as in the monorepo structure. Use Spec-Kit Plus conventions: structured markdown, referenceable.
+
+- overview.md: Purpose, Current Phase II, Tech Stack, Features checklist.
+- architecture.md: Full-stack layers, auth flow with JWT.
+- features/task-crud.md: User stories (create/view/update/delete/mark complete), Acceptance Criteria (title required, desc optional, user-associated, filtering by status).
+- features/authentication.md: Signup/signin, JWT issuance, token in headers, verification, user isolation.
+- api/rest-endpoints.md: Base URL (dev: http://localhost:8000), Auth (Bearer token), All endpoints with methods, descriptions, query params (status, sort), request/response models.
+- database/schema.md: Tables (users: id, email, name, created_at; tasks: id, user_id FK, title, description, completed default false, created_at, updated_at), Indexes.
+- ui/components.md: Reusable: TaskCard, TaskForm, TaskList.
+- ui/pages.md: Login, Signup, Tasks page (list with CRUD actions).
+
+Gemini Instructions: Update specs if needed. Install any tools if required. Use .env from previous. Ensure specs match project details precisely (e.g., API behavior changes post-auth). Reference GEMINI.md for guidelines.
+
+
+
+ /SP.PLAN
+
+Generate a detailed plan for Phase II based on specs (@specs/overview.md, @specs/features/task-crud.md, @specs/features/authentication.md, @specs/api/rest-endpoints.md, @specs/database/schema.md, @specs/ui/components.md, @specs/ui/pages.md).
+
+Plan Structure:
+1. Backend Setup: DB connection, models, routes, JWT middleware.
+2. Frontend Setup: Auth config with Better Auth + JWT plugin, API client with token attachment.
+3. Database: Migrate schema to Neon.
+4. API Implementation: All endpoints with user filtering.
+5. UI: Pages and components for CRUD.
+6. Integration: Docker-compose, .env sharing.
+7. Testing: Basic endpoints and auth flow.
+
+Gemini Instructions: Plan cross-cutting changes. Use monorepo context. Auto-install packages (e.g., better-auth for frontend, pyjwt for backend). Use provided API keys if any integrations needed. Agent retrieves from Neon DB.
+
+
+ /SP.IMPLEMENT
+
+Implement all tasks from the plan, referencing GEMINI.md (@GEMINI.md, @frontend/GEMINI.md, @backend/GEMINI.md) and specs (@specs/*). No manual coding—use Gemini Code to edit files in monorepo.
+
+Steps:
+- Backend: Implement models.py (Task model with user_id), db.py (SQLModel session with Neon URL), main.py (app with middleware for JWT verify using pyjwt and shared secret), routes/tasks.py (all endpoints: filter by decoded user_id, enforce ownership).
+- Frontend: Configure Better Auth in app (enable JWT, signup/signin pages), /lib/api.ts (fetch with Bearer token), components and pages for responsive CRUD (use Tailwind, server/client components).
+- DB: Auto-migrate schema on start.
+- Auth: Enable JWT issuance on login, verify in backend, 401 on invalid, user isolation.
+- Full Integration: docker-compose up runs both, commands as in GEMINI.md.
+
+Gemini Instructions: Iterate if needed. Install all packages automatically. Create/update .env in root/frontend/backend with BETTER_AUTH_SECRET (shared), DATABASE_URL (Neon string), and API keys as needed. Agent retrieves/updates Neon DB. Test: Run uvicorn and npm dev, verify multi-user isolation. Ensure fast, reliable code—optimize for performance.
+
+
+
+ /SP.IMPLEMENT
+
+Implement all tasks from the plan, referencing GEMINI.md (@GEMINI.md, @frontend/GEMINI.md, @backend/GEMINI.md) and specs (@specs/*). No manual coding—use Gemini Code to edit files in monorepo.
+
+Steps:
+- Backend: Implement models.py (Task model with user_id), db.py (SQLModel session with Neon URL), main.py (app with middleware for JWT verify using pyjwt and shared secret), routes/tasks.py (all endpoints: filter by decoded user_id, enforce ownership).
+- Frontend: Configure Better Auth in app (enable JWT, signup/signin pages), /lib/api.ts (fetch with Bearer token), components and pages for responsive CRUD (use Tailwind, server/client components).
+- DB: Auto-migrate schema on start.
+- Auth: Enable JWT issuance on login, verify in backend, 401 on invalid, user isolation.
+- Full Integration: docker-compose up runs both, commands as in GEMINI.md.
+
+Gemini Instructions: Iterate if needed. Install all packages automatically. Create/update .env in root/frontend/backend with BETTER_AUTH_SECRET (shared), DATABASE_URL (Neon string), and API keys as needed. Agent retrieves/updates Neon DB. Test: Run uvicorn and npm dev, verify multi-user isolation. Ensure fast, reliable code—optimize for performance.

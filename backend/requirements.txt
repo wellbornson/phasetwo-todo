@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+pyjwt
+psycopg2-binary
+python-dotenv
+pytest
+httpx
+requests
+passlib[bcrypt]
+python-multipart
