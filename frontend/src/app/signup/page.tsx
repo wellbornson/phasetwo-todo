@@ -24,7 +24,7 @@ export default function SignupPage() {
             name,
             callbackURL: "/tasks",
             fetchOptions: {
-                onError: (ctx) => {
+                onError: (ctx: { error: { message: string } }) => {
                     setError(ctx.error.message);
                     setLoading(false);
                 },

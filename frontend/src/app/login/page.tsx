@@ -22,7 +22,7 @@ export default function LoginPage() {
             password,
             callbackURL: "/tasks",
             fetchOptions: {
-                onError: (ctx) => {
+                onError: (ctx: { error: { message: string } }) => {
                     setError(ctx.error.message);
                     setLoading(false);
                 },
